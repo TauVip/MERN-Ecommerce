@@ -5,6 +5,9 @@ const mongoose = require('mongoose')
 const authRoutes = require('./routes/auth')
 const adminRoutes = require('./routes/admin/auth')
 const categoryRoutes = require('./routes/category')
+const productRoutes = require('./routes/product')
+const cartRoutes = require('./routes/cart')
+const path = require('path')
 
 env.config()
 
@@ -22,12 +25,15 @@ mongoose
   })
 
 app.use(express.json())
+app.use('/public', express.static(path.join(__dirname, 'uploads')))
 app.use('/api', authRoutes)
 app.use('/api', adminRoutes)
 app.use('/api', categoryRoutes)
+app.use('/api', productRoutes)
+app.use('/api', cartRoutes)
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`)
 })
 
-// Mern Stack Project | Ecommerce Website | Categories and Sub Categories Rest Api | 16:40
+// MERN Stack Project | Ecommerce Website | Admin Login & Private Route - 11 | 9:05
