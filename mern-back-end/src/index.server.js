@@ -41,4 +41,4 @@ app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`)
 })
 
-// MERN Stack Project | Ecommerce Website | fetch product api and render product list - 19 | 46:56
+// MERN Stack Project | Ecommerce Website | Fix Categories Delete & UI Update - 24 | 28:43
