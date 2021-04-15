@@ -1,7 +1,7 @@
 import axios from '../helpers/axios'
 import { categoryConstants } from './constants'
 
-export const getAllCategory = () => async dispatch => {
+const getAllCategory = () => async dispatch => {
   dispatch({ type: categoryConstants.GET_ALL_CATEGORIES_REQUEST })
   const res = await axios.get('category/getcategory')
   if (res.status === 200) {
@@ -40,18 +40,35 @@ export const addCategory = form => async dispatch => {
 }
 
 export const updateCategories = form => async dispatch => {
+  dispatch({ type: categoryConstants.UPDATE_CATEGORIES_REQUEST })
   const res = await axios.post('/category/update', form)
   if (res.status === 201) {
-    return true
+    dispatch({ type: categoryConstants.UPDATE_CATEGORIES_SUCCESS })
+    dispatch(getAllCategory())
   } else {
-    console.log(res)
+    const { error } = res
+    dispatch({
+      type: categoryConstants.UPDATE_CATEGORIES_FAILURE,
+      payload: { error }
+    })
   }
 }
 
 export const deleteCategories = ids => async dispatch => {
+  dispatch({ type: categoryConstants.DELETE_CATEGORIES_REQUEST })
   const res = await axios.post('/category/delete', {
     payload: { ids }
   })
-  if (res.status === 201) return true
-  else return false
+  if (res.status === 201) {
+    dispatch(getAllCategory())
+    dispatch({ type: categoryConstants.DELETE_CATEGORIES_SUCCESS })
+  } else {
+    const { error } = res.data
+    dispatch({
+      type: categoryConstants.DELETE_CATEGORIES_FAILURE,
+      payload: { error }
+    })
+  }
 }
+
+export { getAllCategory }

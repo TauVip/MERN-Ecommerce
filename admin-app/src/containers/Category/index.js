@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import CheckboxTree from 'react-checkbox-tree'
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,7 +14,10 @@ import {
   IoIosCheckboxOutline,
   IoIosCheckbox,
   IoIosArrowForward,
-  IoIosArrowDown
+  IoIosArrowDown,
+  IoIosAdd,
+  IoIosTrash,
+  IoIosCloudUpload
 } from 'react-icons/io'
 import UpdateCategoriesModal from './components/UpdateCategoriesModal'
 import 'react-checkbox-tree/lib/react-checkbox-tree.css'
@@ -35,8 +38,18 @@ const Category = () => {
   const [deleteCategoryModal, setDeleteCategoryModal] = useState(false)
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    if (!category.loading) setShow(false)
+  }, [category.loading])
+
   const handleClose = () => {
     const form = new FormData()
+
+    if (categoryName === '') {
+      alert('Category name is required')
+      setShow(false)
+      return
+    }
 
     form.append('name', categoryName)
     form.append('parentId', parentCategoryId)
@@ -68,7 +81,8 @@ const Category = () => {
       options.push({
         value: category._id,
         name: category.name,
-        parentId: category.parentId
+        parentId: category.parentId,
+        type: category.type
       })
       if (category.children.length > 0) {
         createCategoryList(category.children, options)
@@ -135,11 +149,7 @@ const Category = () => {
       form.append('parentId', item.parentId ? item.parentId : '')
       form.append('type', item.type)
     })
-    dispatch(updateCategories(form)).then(result => {
-      if (result) dispatch(getAllCategory())
-    })
-
-    setUpdateCategoryModal(false)
+    dispatch(updateCategories(form))
   }
 
   const deleteCategory = () => {
@@ -158,6 +168,7 @@ const Category = () => {
         }
       })
     }
+    setDeleteCategoryModal(false)
   }
 
   const renderDeleteCategoryModal = () => (
@@ -176,8 +187,7 @@ const Category = () => {
           color: 'danger',
           onClick: deleteCategories
         }
-      ]}
-    >
+      ]}>
       <h5>Expanded</h5>
       {expandedArray.map((item, index) => (
         <span key={index}>{item.name}</span>
@@ -198,7 +208,18 @@ const Category = () => {
           <Col md={12}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <h3>Category</h3>
-              <button onClick={handleShow}>Add</button>
+              <div className='actionBtnContainer'>
+                <span>Actions: </span>
+                <button onClick={handleShow}>
+                  <IoIosAdd /> <span>Add</span>
+                </button>
+                <button onClick={deleteCategory}>
+                  <IoIosTrash /> <span>Delete</span>
+                </button>
+                <button onClick={updateCategory}>
+                  <IoIosCloudUpload /> <span>Edit</span>
+                </button>
+              </div>
             </div>
           </Col>
         </Row>
@@ -220,17 +241,12 @@ const Category = () => {
             />
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <button onClick={deleteCategory}>Delete</button>
-            <button onClick={updateCategory}>Edit</button>
-          </Col>
-        </Row>
       </Container>
 
       <AddCategoryModal
         show={show}
-        handleClose={handleClose}
+        handleClose={() => setShow(false)}
+        onSubmit={handleClose}
         modalTitle={'Add New Category'}
         categoryName={categoryName}
         setCategoryName={setCategoryName}
@@ -242,7 +258,8 @@ const Category = () => {
 
       <UpdateCategoriesModal
         show={updateCategoryModal}
-        handleClose={updateCategoriesForm}
+        handleClose={() => setUpdateCategoryModal(false)}
+        onSubmit={updateCategoriesForm}
         modalTitle={'Update Categories'}
         size='lg'
         expandedArray={expandedArray}

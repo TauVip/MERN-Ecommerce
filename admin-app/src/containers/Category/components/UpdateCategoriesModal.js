@@ -11,16 +11,17 @@ const UpdateCategoriesModal = props => {
     expandedArray,
     checkedArray,
     handleCategoryInput,
-    categoryList
+    categoryList,
+    onSubmit
   } = props
 
   return (
     <Modal
       show={show}
       handleClose={handleClose}
+      onSubmit={onSubmit}
       modalTitle={modalTitle}
-      size={size}
-    >
+      size={size}>
       <Row>
         <Col>
           <h6>Expanded</h6>
@@ -49,8 +50,7 @@ const UpdateCategoriesModal = props => {
                     index,
                     'expanded'
                   )
-                }
-              >
+                }>
                 <option>select category</option>
                 {categoryList.map(option => (
                   <option key={option.value} value={option.value}>
@@ -60,7 +60,12 @@ const UpdateCategoriesModal = props => {
               </select>
             </Col>
             <Col>
-              <select className='form-control'>
+              <select
+                className='form-control'
+                value={item.type}
+                onChange={e =>
+                  handleCategoryInput('type', e.target.value, index, 'expanded')
+                }>
                 <option value=''>Select Type</option>
                 <option value='store'>Store</option>
                 <option value='product'>Product</option>
@@ -93,8 +98,7 @@ const UpdateCategoriesModal = props => {
                     index,
                     'checked'
                   )
-                }
-              >
+                }>
                 <option>select category</option>
                 {categoryList.map(option => (
                   <option key={option.value} value={option.value}>
@@ -104,7 +108,12 @@ const UpdateCategoriesModal = props => {
               </select>
             </Col>
             <Col>
-              <select className='form-control'>
+              <select
+                className='form-control'
+                value={item.type}
+                onChange={e =>
+                  handleCategoryInput('type', e.target.value, index, 'checked')
+                }>
                 <option value=''>Select Type</option>
                 <option value='store'>Store</option>
                 <option value='product'>Product</option>
