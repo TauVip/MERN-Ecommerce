@@ -26,12 +26,13 @@ const ProductStore = props => {
       {Object.keys(product.productsByPrice).map((key, index) => (
         <Card
           key={index}
-          headerLeft={`${props.match.params.slug} mobile under ${priceRange[key]}`}
-          headerRight={<button>view all</button>}
+          headerleft={`${props.match.params.slug} mobile under ${priceRange[key]}`}
+          headerright={<button>view all</button>}
           style={{
             width: 'calc(100% - 40px)',
             margin: '20px'
-          }}>
+          }}
+        >
           <div style={{ display: 'flex' }}>
             {product.productsByPrice[key] &&
               product.productsByPrice[key].map(product => (
@@ -39,7 +40,8 @@ const ProductStore = props => {
                   to={`/${product.slug}/${product._id}/p`}
                   style={{ display: 'block' }}
                   className='productContainer'
-                  key={product._id}>
+                  key={product._id}
+                >
                   <div className='productImgContainer'>
                     <img
                       src={generatePublicUrl(product.productPictures[0].img)}

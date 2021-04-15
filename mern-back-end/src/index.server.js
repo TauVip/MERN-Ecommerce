@@ -43,4 +43,4 @@ app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`)
 })
 
-// MERN Stack Project | Ecommerce Website | Increase Cart Quantity | 1:28
+// MERN Stack Project | Ecommerce Website | Increase Cart Quantity | 25:06
