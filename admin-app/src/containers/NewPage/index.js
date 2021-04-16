@@ -25,7 +25,6 @@ const NewPage = () => {
   }, [category])
 
   useEffect(() => {
-    console.log(page)
     if (!page.loading) {
       setCreateModal(false)
       setTitle('')
