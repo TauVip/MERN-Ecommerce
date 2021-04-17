@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { generatePublicUrl } from '../../../urlConfig'
 import './style.css'
 
 const CartItem = props => {
-  const [qty, setQty] = useState(props.cartItem.qty)
+  const [qty, setQty] = useState(1)
   const { _id, name, price, img } = props.cartItem
 
   const onQuantityIncrement = () => {
@@ -16,6 +16,10 @@ const CartItem = props => {
     setQty(qty - 1)
     props.onQuantityDec(_id, qty - 1)
   }
+
+  useEffect(() => {
+    setQty(props.cartItem.qty)
+  }, [props.cartItem.qty])
 
   return (
     <div key={_id} className='cartItemContainer'>

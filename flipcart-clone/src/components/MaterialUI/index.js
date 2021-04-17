@@ -57,8 +57,9 @@ const MaterialInput = props => {
 }
 
 const MaterialButton = props => {
-  const onClick = () => props.onClick && props.onClick()
-
+  const onClick = () => {
+    props.onClick && props.onClick()
+  }
   return (
     <div
       style={{
@@ -67,7 +68,10 @@ const MaterialButton = props => {
       }}>
       <button
         className='materialButton'
-        style={{ backgroundColor: props.bgColor, color: props.textColor }}
+        style={{
+          backgroundColor: props.bgColor,
+          color: props.textColor
+        }}
         onClick={onClick}>
         {props.icon && props.icon}
         {props.title && props.title}
@@ -103,4 +107,12 @@ const DropdownMenu = props => {
   )
 }
 
-export { Modal, MaterialInput, MaterialButton, DropdownMenu }
+const Anchor = props => {
+  return (
+    <button {...props} className='anchorButton'>
+      {props.name}
+    </button>
+  )
+}
+
+export { Modal, MaterialInput, MaterialButton, DropdownMenu, Anchor }

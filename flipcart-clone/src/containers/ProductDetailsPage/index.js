@@ -119,7 +119,6 @@ const ProductDetailsPage = props => {
               <span className='discount' style={{ margin: '0 10px' }}>
                 22% off
               </span>
-              {/* <span>i</span> */}
             </div>
             <div>
               <p

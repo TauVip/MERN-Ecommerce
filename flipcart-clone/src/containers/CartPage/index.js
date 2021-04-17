@@ -6,6 +6,7 @@ import CartItem from './CartItem'
 import { addToCart, getCartItems } from '../../actions'
 import { MaterialButton } from '../../components/MaterialUI'
 import './style.css'
+import PriceDetails from '../../components/PriceDetails'
 
 const CartPage = props => {
   const cart = useSelector(state => state.cart)
@@ -21,12 +22,12 @@ const CartPage = props => {
     if (auth.authenticate) dispatch(getCartItems())
   }, [auth.authenticate])
 
-  const onQuantityIncrement = (_id, qty) => {
+  const onQuantityIncrement = _id => {
     const { name, price, img } = cartItems[_id]
     dispatch(addToCart({ _id, name, price, img }, 1))
   }
 
-  const onQuantityDecrement = (_id, qty) => {
+  const onQuantityDecrement = _id => {
     const { name, price, img } = cartItems[_id]
     dispatch(addToCart({ _id, name, price, img }, -1))
   }
@@ -68,7 +69,16 @@ const CartPage = props => {
             </div>
           </div>
         </Card>
-        <Card headerleft='Price' style={{ width: '380px' }}></Card>
+        <PriceDetails
+          totalItem={Object.keys(cart.cartItems).reduce(
+            (qty, key) => qty + cart.cartItems[key].qty,
+            0
+          )}
+          totalPrice={Object.keys(cart.cartItems).reduce((totalPrice, key) => {
+            const { price, qty } = cart.cartItems[key]
+            return totalPrice + price * qty
+          }, 0)}
+        />
       </div>
     </Layout>
   )
