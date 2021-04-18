@@ -55,33 +55,6 @@ exports.addItemToCart = (req, res) => {
   })
 }
 
-/*
-exports.addToCart = (req, res) => {
-  const { cartItems } = req.body
-  if (cartItems) {
-    if (Object.keys(cartItems).length > 0) {
-      Cart.findOneAndUpdate(
-        {
-          user: req.user._id
-        },
-        { cartItems },
-        {
-          upsert: true,
-          new: true,
-          setDefaultsOnInsert: true
-        },
-        (error, cartItems) => {
-          if (error) return res.status(400).json({ error })
-
-          res.status(201).json({ message: 'Added Successfully' })
-        }
-      )
-    }
-  } else {
-  }
-}
-*/
-
 exports.getCartItems = (req, res) => {
   Cart.findOne({ user: req.user._id })
     .populate('cartItems.product', '_id name price productPictures')

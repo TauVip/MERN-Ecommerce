@@ -1,3 +1,4 @@
+import React from 'react'
 import './style.css'
 
 const Card = props => {
@@ -9,6 +10,7 @@ const Card = props => {
           {props.headerright && props.headerright}
         </div>
       )}
+
       {props.children}
     </div>
   )

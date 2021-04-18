@@ -32,6 +32,21 @@ const CartPage = props => {
     dispatch(addToCart({ _id, name, price, img }, -1))
   }
 
+  if (props.onlyCartItems) {
+    return (
+      <>
+        {Object.keys(cartItems).map((key, i) => (
+          <CartItem
+            cartItem={cartItems[key]}
+            onQuantityInc={onQuantityIncrement}
+            onQuantityDec={onQuantityDecrement}
+            key={i}
+          />
+        ))}
+      </>
+    )
+  }
+
   return (
     <Layout>
       <div className='cartContainer' style={{ alignItems: 'flex-start' }}>
@@ -41,13 +56,14 @@ const CartPage = props => {
           style={{
             width: 'calc(100% - 400px)',
             overflow: 'hidden'
-          }}>
-          {Object.keys(cartItems).map((key, index) => (
+          }}
+        >
+          {Object.keys(cartItems).map((key, i) => (
             <CartItem
-              key={index}
               cartItem={cartItems[key]}
               onQuantityInc={onQuantityIncrement}
               onQuantityDec={onQuantityDecrement}
+              key={i}
             />
           ))}
 
@@ -60,7 +76,8 @@ const CartPage = props => {
               boxShadow: '0 0 10px 10px #eee',
               padding: '10px 0',
               boxSizing: 'border-box'
-            }}>
+            }}
+          >
             <div style={{ width: '250px' }}>
               <MaterialButton
                 title='PLACE ORDER'

@@ -3,7 +3,7 @@ const slugify = require('slugify')
 const Category = require('../models/category')
 
 exports.createProduct = (req, res) => {
-  const { name, price, description, category, quantity, createdBy } = req.body
+  const { name, price, description, category, quantity } = req.body
   let productPictures = []
 
   if (req.files.length > 0) {
@@ -32,7 +32,7 @@ exports.createProduct = (req, res) => {
 exports.getProductsBySlug = (req, res) => {
   const { slug } = req.params
   Category.findOne({ slug })
-    .select('_id')
+    .select('_id type')
     .exec((error, category) => {
       if (error) return res.status(400).json({ error })
 
@@ -59,7 +59,7 @@ exports.getProductsBySlug = (req, res) => {
                 )
               }
             })
-          }
+          } else res.status(200).json({ products })
         })
       }
     })

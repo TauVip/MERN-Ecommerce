@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
 import './style.css'
 
+/**
+ * @author Rizwan Khan
+ * @function
+ **/
+
 const Modal = props => {
   if (!props.visible) {
     return null
@@ -29,13 +34,15 @@ const MaterialInput = props => {
         style={{
           top: 0,
           lineHeight: 'none'
-        }}>
+        }}
+      >
         {props.label}
       </label>
       <div
         style={{
           display: 'flex'
-        }}>
+        }}
+      >
         <input
           className='input'
           type={props.type}
@@ -65,14 +72,16 @@ const MaterialButton = props => {
       style={{
         width: '100%',
         ...props.style
-      }}>
+      }}
+    >
       <button
         className='materialButton'
         style={{
           backgroundColor: props.bgColor,
           color: props.textColor
         }}
-        onClick={onClick}>
+        onClick={onClick}
+      >
         {props.icon && props.icon}
         {props.title && props.title}
       </button>
@@ -93,10 +102,13 @@ const DropdownMenu = props => {
               <li key={index}>
                 <a
                   onClick={e => {
-                    e.preventDefault()
-                    item.onClick && item.onClick()
+                    if (item.onClick) {
+                      e.preventDefault()
+                      item.onClick && item.onClick()
+                    }
                   }}
-                  href={item.href}>
+                  href={`${item.href}`}
+                >
                   {item.label}
                 </a>
               </li>
@@ -115,4 +127,20 @@ const Anchor = props => {
   )
 }
 
-export { Modal, MaterialInput, MaterialButton, DropdownMenu, Anchor }
+const Breed = props => {
+  return (
+    <div className='breed'>
+      <ul>
+        {props.breed &&
+          props.breed.map((item, index) => (
+            <li key={index}>
+              <a href={item.href}>{item.name}</a>
+              {props.breedIcon}
+            </li>
+          ))}
+      </ul>
+    </div>
+  )
+}
+
+export { Modal, MaterialInput, MaterialButton, DropdownMenu, Anchor, Breed }

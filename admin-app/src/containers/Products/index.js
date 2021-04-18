@@ -22,7 +22,9 @@ const Products = () => {
   const product = useSelector(state => state.product)
   const dispatch = useDispatch()
 
-  const handleClose = () => {
+  const handleClose = () => setShow(false)
+
+  const submitProductForm = () => {
     const form = new FormData()
     form.append('name', name)
     form.append('quantity', quantity)
@@ -35,9 +37,8 @@ const Products = () => {
     }
 
     dispatch(addProduct(form))
-
-    setShow(false)
   }
+
   const handleShow = () => setShow(true)
 
   const createCategoryList = (categories, options = []) => {
@@ -71,7 +72,8 @@ const Products = () => {
           product.products.map(product => (
             <tr
               onClick={() => showProductDetailsModal(product)}
-              key={product._id}>
+              key={product._id}
+            >
               <td>2</td>
               <td>{product.name}</td>
               <td>{product.price}</td>
@@ -113,7 +115,8 @@ const Products = () => {
       <select
         className='form-control'
         value={categoryId}
-        onChange={e => setCategoryId(e.target.value)}>
+        onChange={e => setCategoryId(e.target.value)}
+      >
         <option>Select category</option>
         {createCategoryList(category.categories).map(option => (
           <option key={option.value} value={option.value}>
@@ -144,7 +147,8 @@ const Products = () => {
         show={productDetailModal}
         handleClose={handleCloseProductDetailsModal}
         modalTitle='Product Details'
-        size='lg'>
+        size='lg'
+      >
         <Row>
           <Col md='6'>
             <label className='key'>Name</label>
@@ -171,8 +175,8 @@ const Products = () => {
           <Col>
             <label className='key'>Product Pictures</label>
             <div style={{ display: 'flex' }}>
-              {productDetails.productPictures.map(picture => (
-                <div className='productImgContainer'>
+              {productDetails.productPictures.map((picture, i) => (
+                <div className='productImgContainer' key={i}>
                   <img src={generatePublicUrl(picture.img)} />
                 </div>
               ))}
