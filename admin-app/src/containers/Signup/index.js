@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Container, Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router'
@@ -15,6 +15,15 @@ const Signup = () => {
   const auth = useSelector(state => state.auth)
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (!user.loading) {
+      setFirstName('')
+      setLastName('')
+      setEmail('')
+      setPassword('')
+    }
+  }, [user.loading])
 
   const userSignup = e => {
     e.preventDefault()

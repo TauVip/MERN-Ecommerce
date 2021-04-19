@@ -6,17 +6,11 @@ import Card from '../../components/UI/Card'
 
 import './style.css'
 
-/**
- * @author
- * @function OrderDetails
- **/
-
 const OrderDetailsPage = props => {
   const dispatch = useDispatch()
   const orderDetails = useSelector(state => state.user.orderDetails)
 
   useEffect(() => {
-    console.log({ props })
     const payload = {
       orderId: props.match.params.orderId
     }
@@ -33,8 +27,7 @@ const OrderDetailsPage = props => {
         style={{
           width: '1160px',
           margin: '10px auto'
-        }}
-      >
+        }}>
         <Card>
           <div className='delAdrContainer'>
             <div className='delAdrDetails'>

@@ -4,7 +4,7 @@ exports.createPage = (req, res) => {
   const { banners, products } = req.files
   if (banners && banners.length > 0) {
     req.body.banners = banners.map(banner => ({
-      img: `${process.env.API}/public/${banner.filename}`,
+      img: `/public/${banner.filename}`,
       navigateTo: `/bannerClicked?categoryId=${req.body.category}&type=${req.body.type}`
     }))
   }

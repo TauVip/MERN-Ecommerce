@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import Layout from '../../components/Layout'
 import Card from '../../components/UI/Card'
 import CartItem from './CartItem'
-import { addToCart, getCartItems } from '../../actions'
-import { MaterialButton } from '../../components/MaterialUI'
-import './style.css'
+import { addToCart, getCartItems, removeCartItem } from '../../actions'
 import PriceDetails from '../../components/PriceDetails'
+
+import './style.css'
+import { MaterialButton } from '../../components/MaterialUI'
 
 const CartPage = props => {
   const cart = useSelector(state => state.cart)
@@ -19,28 +20,35 @@ const CartPage = props => {
   }, [cart.cartItems])
 
   useEffect(() => {
-    if (auth.authenticate) dispatch(getCartItems())
+    if (auth.authenticate) {
+      dispatch(getCartItems())
+    }
   }, [auth.authenticate])
 
-  const onQuantityIncrement = _id => {
+  const onQuantityIncrement = (_id, qty) => {
     const { name, price, img } = cartItems[_id]
     dispatch(addToCart({ _id, name, price, img }, 1))
   }
 
-  const onQuantityDecrement = _id => {
+  const onQuantityDecrement = (_id, qty) => {
     const { name, price, img } = cartItems[_id]
     dispatch(addToCart({ _id, name, price, img }, -1))
+  }
+
+  const onRemoveCartItem = _id => {
+    dispatch(removeCartItem({ productId: _id }))
   }
 
   if (props.onlyCartItems) {
     return (
       <>
-        {Object.keys(cartItems).map((key, i) => (
+        {Object.keys(cartItems).map((key, index) => (
           <CartItem
+            key={index}
             cartItem={cartItems[key]}
             onQuantityInc={onQuantityIncrement}
             onQuantityDec={onQuantityDecrement}
-            key={i}
+            onRemoveCartItem={onRemoveCartItem}
           />
         ))}
       </>
@@ -53,17 +61,14 @@ const CartPage = props => {
         <Card
           headerleft={`My Cart`}
           headerright={<div>Deliver to</div>}
-          style={{
-            width: 'calc(100% - 400px)',
-            overflow: 'hidden'
-          }}
-        >
-          {Object.keys(cartItems).map((key, i) => (
+          style={{ width: 'calc(100% - 400px)', overflow: 'hidden' }}>
+          {Object.keys(cartItems).map((key, index) => (
             <CartItem
+              key={index}
               cartItem={cartItems[key]}
               onQuantityInc={onQuantityIncrement}
               onQuantityDec={onQuantityDecrement}
-              key={i}
+              onRemoveCartItem={onRemoveCartItem}
             />
           ))}
 
@@ -76,21 +81,19 @@ const CartPage = props => {
               boxShadow: '0 0 10px 10px #eee',
               padding: '10px 0',
               boxSizing: 'border-box'
-            }}
-          >
+            }}>
             <div style={{ width: '250px' }}>
               <MaterialButton
                 title='PLACE ORDER'
-                onClick={() => props.history.push('/checkout')}
+                onClick={() => props.history.push(`/checkout`)}
               />
             </div>
           </div>
         </Card>
         <PriceDetails
-          totalItem={Object.keys(cart.cartItems).reduce(
-            (qty, key) => qty + cart.cartItems[key].qty,
-            0
-          )}
+          totalItem={Object.keys(cart.cartItems).reduce(function (qty, key) {
+            return qty + cart.cartItems[key].qty
+          }, 0)}
           totalPrice={Object.keys(cart.cartItems).reduce((totalPrice, key) => {
             const { price, qty } = cart.cartItems[key]
             return totalPrice + price * qty

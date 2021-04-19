@@ -24,14 +24,12 @@ const ClothingAndAccessories = props => {
           boxSizing: 'border-box',
           padding: '10px',
           display: 'flex'
-        }}
-      >
-        {product.products.map(product => (
-          <div className='caContainer'>
+        }}>
+        {product.products.map((product, i) => (
+          <div className='caContainer' key={i}>
             <Link
               className='caImgContainer'
-              to={`/${product.slug}/${product._id}/p`}
-            >
+              to={`/${product.slug}/${product._id}/p`}>
               <img src={generatePublicUrl(product.productPictures[0].img)} />
             </Link>
             <div>

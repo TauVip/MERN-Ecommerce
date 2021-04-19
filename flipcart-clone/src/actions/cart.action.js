@@ -2,7 +2,7 @@ import axios from '../helpers/axios'
 import { cartConstants } from './constants'
 import store from '../store'
 
-const getCartItems = () => async dispatch => {
+export const getCartItems = () => async dispatch => {
   try {
     dispatch({ type: cartConstants.ADD_TO_CART_REQUEST })
     const res = await axios.post('/user/getCartItems')
@@ -44,6 +44,25 @@ export const addToCart = (product, newQty = 1) => async dispatch => {
   })
 }
 
+export const removeCartItem = payload => async dispatch => {
+  try {
+    dispatch({ type: cartConstants.REMOVE_CART_ITEM_REQUEST })
+    const res = await axios.post('/user/cart/removeItem', { payload })
+    if (res.status === 202) {
+      dispatch({ type: cartConstants.REMOVE_CART_ITEM_SUCCESS })
+      dispatch(getCartItems())
+    } else {
+      const { error } = res.data
+      dispatch({
+        type: cartConstants.REMOVE_CART_ITEM_FAILURE,
+        payload: { error }
+      })
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const updateCart = () => async dispatch => {
   const { auth } = store.getState()
   let cartItems =
@@ -72,5 +91,3 @@ export const updateCart = () => async dispatch => {
     }
   }
 }
-
-export { getCartItems }

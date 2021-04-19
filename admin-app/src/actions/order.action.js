@@ -1,5 +1,5 @@
 import axios from '../helpers/axios'
-import { orderConstants, pageConstants } from './constants'
+import { orderConstants } from './constants'
 
 export const getCustomerOrders = () => async dispatch => {
   dispatch({ type: orderConstants.GET_CUSTOMER_ORDER_REQUEST })

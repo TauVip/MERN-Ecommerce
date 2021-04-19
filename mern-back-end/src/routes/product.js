@@ -3,7 +3,9 @@ const { requireSignin, adminMiddleware } = require('../common-middleware')
 const {
   createProduct,
   getProductsBySlug,
-  getProductDetailsById
+  getProductDetailsById,
+  deleteProductById,
+  getProducts
 } = require('../controller/product')
 const multer = require('multer')
 const router = express.Router()
@@ -30,5 +32,12 @@ router.post(
 )
 router.get('/products/:slug', getProductsBySlug)
 router.get('/product/:productId', getProductDetailsById)
+router.delete(
+  '/product/deleteProductById',
+  requireSignin,
+  adminMiddleware,
+  deleteProductById
+)
+router.post('/product/getProducts', requireSignin, adminMiddleware, getProducts)
 
 module.exports = router

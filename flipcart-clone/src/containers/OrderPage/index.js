@@ -6,14 +6,10 @@ import Card from '../../components/UI/Card'
 import { generatePublicUrl } from '../../urlConfig'
 import { BiRupee } from 'react-icons/bi'
 import { IoIosArrowForward } from 'react-icons/io'
+import { Breed } from '../../components/MaterialUI'
+import { Link } from 'react-router-dom'
 
 import './style.css'
-import { Breed } from '../../components/MaterialUI'
-
-/**
- * @author
- * @function OrderPage
- **/
 
 const OrderPage = () => {
   const dispatch = useDispatch()
@@ -36,8 +32,10 @@ const OrderPage = () => {
         />
         {user.orders.map(order => {
           return order.items.map((item, i) => (
-            <Card style={{ margin: '5px 0' }} key={i}>
-              <div className='orderItemContainer'>
+            <Card style={{ display: 'block', margin: '5px 0' }} key={i}>
+              <Link
+                to={`/order_details/${order._id}`}
+                className='orderItemContainer'>
                 <div className='orderImgContainer'>
                   <img
                     className='orderImg'
@@ -54,7 +52,7 @@ const OrderPage = () => {
                   </div>
                   <div>{order.paymentStatus}</div>
                 </div>
-              </div>
+              </Link>
             </Card>
           ))
         })}
